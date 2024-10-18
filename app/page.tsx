@@ -45,6 +45,17 @@ export default function Home() {
         setBoard(updatedBoard);
         console.log("Board updated:", updatedBoard);
       });
+
+      socket.on("gameOver", ({ winner, board }) => {
+        if (winner) {
+          alert(`Player ${winner} has won!`);
+        } else {
+          alert("It's a tie!");
+        }
+
+        // Reset the board
+        setBoard(board); // This will reset the board to the server's reset state
+      });
     }
 
     function onDisconnect() {
