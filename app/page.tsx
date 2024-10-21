@@ -13,6 +13,8 @@ export default function Home() {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [turn, setServerTurn] = useState("");
 
+  const [roomId, setRoomId] = useState("");
+
   useEffect(() => {
     if (socket.connected) {
       onConnect();
@@ -37,6 +39,7 @@ export default function Home() {
       });
 
       socket.on("turn", (currentTurn) => {
+        console.log("next turn", currentTurn);
         setServerTurn(currentTurn);
       });
 
@@ -44,6 +47,11 @@ export default function Home() {
       socket.on("boardUpdate", (updatedBoard) => {
         setBoard(updatedBoard);
         console.log("Board updated:", updatedBoard);
+      });
+
+      socket.on("roomJoined", (id) => {
+        console.log(id);
+        setRoomId(id);
       });
 
       socket.on("gameOver", ({ winner, board }) => {
@@ -76,7 +84,12 @@ export default function Home() {
     if (role !== turn || board[index]) return; // Only allow the player to play on their turn
 
     // Send the move to the server
-    socket.emit("makeMove", index);
+    socket.emit("makeMove", { index, roomId });
+  };
+
+  const handlePlay = () => {
+    if (roomId) socket.emit("joinRoom", { roomId });
+    else socket.emit("playRandom");
   };
 
   return (
@@ -85,44 +98,50 @@ export default function Home() {
       <p>Transport: {transport}</p>
       <p>username : {username}</p>
       <p>role : {role}</p>
-      <div>
-        <h2>Tic Tac Toe</h2>
-        <div className="board">
-          {board.map((value, index) => (
-            <button
-              key={index}
-              onClick={() => handleClick(index)}
-              className="cell"
-              disabled={role !== turn}
-            >
-              {value}
-            </button>
-          ))}
+
+      <input onChange={(e) => setRoomId(e.target.value)} />
+      <button onClick={handlePlay}>Play</button>
+
+      {roomId && (
+        <div>
+          <h2>Tic Tac Toe</h2>
+          <div className="board">
+            {board.map((value, index) => (
+              <button
+                key={index}
+                onClick={() => handleClick(index)}
+                className="cell"
+                disabled={role !== turn}
+              >
+                {value}
+              </button>
+            ))}
+          </div>
+
+          {/* Show whose turn it is */}
+
+          <style jsx>{`
+            .board {
+              display: grid;
+              grid-template-columns: repeat(3, 100px);
+              grid-template-rows: repeat(3, 100px);
+              gap: 10px;
+            }
+
+            .cell {
+              width: 100px;
+              height: 100px;
+              font-size: 2em;
+              color: black;
+              text-align: center;
+              line-height: 100px;
+              cursor: pointer;
+              background-color: #f0f0f0;
+              border: 2px solid #333;
+            }
+          `}</style>
         </div>
-
-        {/* Show whose turn it is */}
-
-        <style jsx>{`
-          .board {
-            display: grid;
-            grid-template-columns: repeat(3, 100px);
-            grid-template-rows: repeat(3, 100px);
-            gap: 10px;
-          }
-
-          .cell {
-            width: 100px;
-            height: 100px;
-            font-size: 2em;
-            color: black;
-            text-align: center;
-            line-height: 100px;
-            cursor: pointer;
-            background-color: #f0f0f0;
-            border: 2px solid #333;
-          }
-        `}</style>
-      </div>
+      )}
     </div>
   );
 }
