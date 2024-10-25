@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { socket } from "./socket";
+import CheckBoard from "./components/CheckBoard";
 
 export default function Home() {
   const [isConnected, setIsConnected] = useState(false);
@@ -93,55 +94,28 @@ export default function Home() {
   };
 
   return (
-    <div>
-      <p>Status: {isConnected ? "connected" : "disconnected"}</p>
-      <p>Transport: {transport}</p>
-      <p>username : {username}</p>
-      <p>role : {role}</p>
-
-      <input onChange={(e) => setRoomId(e.target.value)} />
-      <button onClick={handlePlay}>Play</button>
-
-      {roomId && (
-        <div>
-          <h2>Tic Tac Toe</h2>
-          <div className="board">
-            {board.map((value, index) => (
-              <button
-                key={index}
-                onClick={() => handleClick(index)}
-                className="cell"
-                disabled={role !== turn}
-              >
-                {value}
-              </button>
-            ))}
-          </div>
-
-          {/* Show whose turn it is */}
-
-          <style jsx>{`
-            .board {
-              display: grid;
-              grid-template-columns: repeat(3, 100px);
-              grid-template-rows: repeat(3, 100px);
-              gap: 10px;
-            }
-
-            .cell {
-              width: 100px;
-              height: 100px;
-              font-size: 2em;
-              color: black;
-              text-align: center;
-              line-height: 100px;
-              cursor: pointer;
-              background-color: #f0f0f0;
-              border: 2px solid #333;
-            }
-          `}</style>
+    <div className="flex flex-col justify-center items-center h-[80%]">
+      <div className="main-menu flex-col hidden">
+        <button className="btn btn-outline btn-primary">Play!</button>
+        <div className="flex flex-row mt-2">
+          <button className="btn btn-outline mt-2 mr-2 btn-accent">
+            Create Room
+          </button>
+          <button className="btn btn-outline mt-2 ml-2 btn-accent">
+            Join a Room
+          </button>
         </div>
-      )}
+        <button className="btn btn-outline mt-2 btn-secondary">About</button>
+      </div>
+      <div className="checkerboard">
+        <div></div>
+        <CheckBoard
+          board={board}
+          role={role}
+          turn={turn}
+          handleClick={handleClick}
+        />
+      </div>
     </div>
   );
 }
