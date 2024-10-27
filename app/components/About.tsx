@@ -19,7 +19,7 @@ export default function AboutModal() {
           <p className="mb-4">
             This mechanic ensures that there can never be a draw, and someone
             must eventually win. The challenge comes from remembering your moves
-            and your opponent's, as the board constantly changes. It adds an
+            and your opponent&apos;s, as the board constantly changes. It adds an
             element of chance and strategy, as players might forget previous
             moves and have to adapt quickly.
           </p>

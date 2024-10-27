@@ -19,6 +19,8 @@ export default function Home() {
 
   const [roomId, setRoomId] = useState("");
 
+  const [winningLine, setWinningLine] = useState<number[] | null>(null);
+
   useEffect(() => {
     if (socket.connected) {
       onConnect();
@@ -58,15 +60,14 @@ export default function Home() {
         setRoomId(id);
       });
 
-      socket.on("gameOver", ({ winner, board }) => {
+      socket.on("gameOver", ({ winner, board, winningLine }) => {
         if (winner) {
           alert(`Player ${winner} has won!`);
         } else {
           alert("It's a tie!");
         }
-
-        // Reset the board
-        setBoard(board); // This will reset the board to the server's reset state
+        setBoard(board);
+        setWinningLine(winningLine);
       });
     }
 
@@ -83,8 +84,7 @@ export default function Home() {
       socket.off("disconnect", onDisconnect);
     };
   }, []);
-
-  const handleClick = (index: Number) => {
+  const handleClick = (index: number) => {
     if (role !== turn || board[index]) return; // Only allow the player to play on their turn
 
     // Send the move to the server
@@ -166,6 +166,7 @@ export default function Home() {
             role={role}
             turn={turn}
             handleClick={handleClick}
+            winningLine={winningLine}
           />
         </div>
       ) : (
