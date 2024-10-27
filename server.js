@@ -1,8 +1,8 @@
-import { createServer } from "node:http";
-import next from "next";
-import { Server } from "socket.io";
+const { createServer } = require("node:http");
+const next = require("next");
+const { Server } = require("socket.io");
 
-import socket from "./lib/socket.js";
+const socket = require("./lib/socket.js");
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
