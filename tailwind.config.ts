@@ -14,11 +14,12 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
-        primary: "#1E3A8A", // Example color: dark blue
-        secondary: "#D97706", // Example color: orange
-        background: "#071A1D",
-        accent: "#16A34A", // Example color: green
-        neutral: "#3D4451", // Example color: dark gray
+        primary: "#458588", // Example color: dark blue
+        secondary: "#ebdbb2", // Example color: orange
+        background: "#79740e",
+        accent: "#d79921", // Example color: green
+        neutral: "#282828",
+        danger: "#fb4934", // Example color: dark gray
       },
     },
   },

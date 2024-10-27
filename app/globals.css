@@ -6,6 +6,17 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --primary: #282828;
+}
+
+.text-stroke-3 {
+  text-shadow: -2px -2px 0 var(--primary), 2px -2px 0 var(--primary),
+    -2px 2px 0 var(--primary), 2px 2px 0 var(--primary);
+}
+
+.text-stroke-black {
+  text-shadow: -1.5px -1.5px 0 black, 1.5px -1.5px 0 black, -1.5px 1.5px 0 black,
+    1px 1px 0 black;
 }
 
 @media (prefers-color-scheme: dark) {
