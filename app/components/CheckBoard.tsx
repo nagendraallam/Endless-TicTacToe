@@ -2,13 +2,24 @@ import { Poppins, Rubik_Bubbles, Rubik_Burned } from "next/font/google";
 import React from "react";
 const bubble = Poppins({ subsets: ["latin"], weight: "400" });
 
-export default function CheckBoard({ board, handleClick, role, turn, winningLine }) {
+export default function CheckBoard({
+  board,
+  handleClick,
+  role,
+  turn,
+  winningLine,
+}: {
+  board: string[];
+  handleClick: (index: number) => void;
+  role: string;
+  turn: string;
+  winningLine: number[] | null;
+}) {
   return (
     <div
-      className={
-        bubble.className +
-        " bg-[#282828] p-4 rounded-xl text-4xl text-white font-extrabold text-stroke-3 relative"
-      }
+      className={`${bubble.className} 
+        bg-[#282828] p-4 rounded-xl text-4xl text-white font-extrabold text-stroke-3 relative
+      `}
     >
       <div className="board">
         {board.map((value, index) => (
