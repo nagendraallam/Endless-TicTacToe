@@ -19,6 +19,8 @@ export default function Home() {
 
   const [roomId, setRoomId] = useState("");
 
+  const [winner, setWinner] = useState('');
+
   const [winningLine, setWinningLine] = useState<number[] | null>(null);
 
   useEffect(() => {
@@ -63,6 +65,7 @@ export default function Home() {
       socket.on("gameOver", ({ winner, board, winningLine }) => {
         if (winner) {
           alert(`Player ${winner} has won!`);
+          setWinner(winner);
         } else {
           alert("It's a tie!");
         }
@@ -92,8 +95,14 @@ export default function Home() {
   };
 
   const handlePlay = () => {
+
+
+    setBoard(Array(9).fill(null));
+
     if (roomId) socket.emit("joinRoom", { roomId });
     else socket.emit("playRandom");
+
+    // get rid of old data as well on frontend;
   };
 
   return (
@@ -129,7 +138,7 @@ export default function Home() {
             </svg>
           </button>
           <p className="w-full text-center font-bold text-[#ebdbb2] text-stroke-black text-2xl mb-2">
-            {role === turn ? "Make your move!" : "Waiting for opponent..."}
+            { winner ? `${winner} WON!` : role === turn ? "Make your move!" : "Waiting for opponent..."}
           </p>
 
           <div className="flex mt-8 mb-6 flex-row items-center justify-between">
