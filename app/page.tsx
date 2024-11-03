@@ -96,6 +96,7 @@ export default function Home() {
 
   const handlePlay = () => {
 
+    setWinner('');
 
     setBoard(Array(9).fill(null));
 
